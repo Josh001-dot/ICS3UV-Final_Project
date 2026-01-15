@@ -2,91 +2,106 @@
  * @author Joshua Adeyemi
  * @version 1.0.0
  * @date 2025-01-14
- * @fileoverview Simple Quiz Game program.
+ * @fileoverview Randomized multiple-choice quiz program
  */
 
-// Question interface
-interface Question {
+// Question structure
+type Question = {
   question: string;
   options: string[];
-  answer: number;
-}
+  correctAnswer: number; // index (0–3)
+};
 
-// Question bank
+// Question bank (10 questions)
 const questions: Question[] = [
   {
     question: "What is 2 + 2?",
     options: ["1", "2", "3", "4"],
-    answer: 3
-  },
-  {
-    question: "Which language is used for web apps?",
-    options: ["Python", "TypeScript", "C", "Java"],
-    answer: 1
+    correctAnswer: 3
   },
   {
     question: "What is the capital of Canada?",
     options: ["Toronto", "Ottawa", "Vancouver", "Montreal"],
-    answer: 1
+    correctAnswer: 1
+  },
+  {
+    question: "Which language is used to style web pages?",
+    options: ["HTML", "Python", "CSS", "C++"],
+    correctAnswer: 2
+  },
+  {
+    question: "Which number is even?",
+    options: ["3", "5", "7", "8"],
+    correctAnswer: 3
+  },
+  {
+    question: "What does CPU stand for?",
+    options: [
+      "Central Processing Unit",
+      "Computer Power Unit",
+      "Central Program Utility",
+      "Control Processing Unit"
+    ],
+    correctAnswer: 0
+  },
+  {
+    question: "Which one is a loop?",
+    options: ["if", "switch", "for", "else"],
+    correctAnswer: 2
+  },
+  {
+    question: "What symbol is used for comments in TypeScript?",
+    options: ["//", "##", "<!-- -->", "**"],
+    correctAnswer: 0
+  },
+  {
+    question: "Which one is an input device?",
+    options: ["Monitor", "Keyboard", "Speaker", "Printer"],
+    correctAnswer: 1
+  },
+  {
+    question: "What is 10 × 5?",
+    options: ["15", "50", "100", "5"],
+    correctAnswer: 1
+  },
+  {
+    question: "Which one stores multiple values?",
+    options: ["Variable", "Loop", "Array", "Function"],
+    correctAnswer: 2
   }
 ];
 
-// ✅ CommonJS import (super-linter friendly)
-const readline = require('readline');
-
-// Create interface for input/output
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-let score: number = 0;
-
-// Function to ask a question
-function askQuestion(q: Question, callback: () => void): void {
-  console.log("\n" + q.question);
-  q.options.forEach((option, index) => {
-    console.log(`${index + 1}. ${option}`);
-  });
-
-  rl.question("Enter the number of your answer: ", (input: string) => {
-    const userChoice = parseInt(input);
-
-    if (isNaN(userChoice) || userChoice < 1 || userChoice > q.options.length) {
-      console.log("Invalid input! Please enter a valid option number.");
-      askQuestion(q, callback);
-    } else {
-      if (userChoice - 1 === q.answer) {
-        console.log("Correct!");
-        score++;
-      } else {
-        console.log(`Incorrect! The correct answer was: ${q.options[q.answer]}`);
-      }
-      callback();
-    }
-  });
+// Shuffle questions (Fisher-Yates)
+for (let i = questions.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  const temp = questions[i];
+  questions[i] = questions[j];
+  questions[j] = temp;
 }
 
-// Function to run the quiz
-function runQuiz(index: number = 0): void {
-  if (index < questions.length) {
-    askQuestion(questions[index], () => runQuiz(index + 1));
+// Quiz logic
+let score: number = 0;
+
+for (let i = 0; i < questions.length; i++) {
+  const q = questions[i];
+
+  let message =
+    q.question + "\n\n" +
+    "1) " + q.options[0] + "\n" +
+    "2) " + q.options[1] + "\n" +
+    "3) " + q.options[2] + "\n" +
+    "4) " + q.options[3];
+
+  const userInput = prompt(message);
+  const userAnswer = Number(userInput) - 1;
+
+  if (userAnswer === q.correctAnswer) {
+    alert("Correct!");
+    score++;
   } else {
-    console.log(`\nQuiz finished! Your total score is: ${score} / ${questions.length}`);
-
-    if (score === questions.length) {
-      console.log("Excellent!");
-    } else if (score >= questions.length / 2) {
-      console.log("Good job!");
-    } else {
-      console.log("Try again next time!");
-    }
-
-    rl.close();
+    alert("Incorrect! Correct answer: " + q.options[q.correctAnswer]);
   }
 }
 
-// Start the game
-console.log("Welcome to the Simple Quiz Game!");
-console.log("Answer the questions by typing the number of your choice.");
-runQuiz();
+// Final output
+alert("Quiz complete!\nYour score: " + score + " / " + questions.length);
