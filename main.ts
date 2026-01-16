@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * @author: Joshua Adeyemi
  * @version: 1.0.0
