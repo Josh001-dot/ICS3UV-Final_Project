@@ -48,7 +48,7 @@ function runQuiz(index: number = 0) {
   let message = `${q.question}\n`;
   q.options.forEach((opt, idx) => message += `${idx + 1}. ${opt}\n`);
 
-  let userInput = prompt(message);
+  const userInput = prompt(message);
   if (userInput === null) return; // User canceled
 
   const userAnswer = parseInt(userInput) - 1;
