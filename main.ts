@@ -1,4 +1,8 @@
 /// <reference lib="dom" />
+/* eslint-env browser */
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
+
 
 /**
  * @author: Joshua Adeyemi
