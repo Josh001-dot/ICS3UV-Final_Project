@@ -1,8 +1,8 @@
 /**
- * Author: Joshua Adeyemi
- * Version: 1.0.0
- * Date: 2026-01-16
- * Fileoverview: Playable multiple-choice quiz in the browser
+ * @author: Joshua Adeyemi
+ * @version: 1.0.0
+ * @date: 2026-01-16
+ * @fileoverview: Playable multiple-choice quiz in the browser
  */
 
 interface Question {
